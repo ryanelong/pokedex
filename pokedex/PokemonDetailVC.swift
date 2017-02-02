@@ -22,6 +22,10 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak var evoLbl: UILabel!
     @IBOutlet weak var currentEvoImg: UIImageView!
     @IBOutlet weak var nextEvoImg: UIImageView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var bioStackView: UIStackView!
+    @IBOutlet weak var movesLbl: UILabel!
+    @IBOutlet weak var movesStackView: UIStackView!
     
     
     var pokemon: Pokemon!
@@ -49,6 +53,7 @@ class PokemonDetailVC: UIViewController {
         weightLbl.text = pokemon.weight
         baseAttackLbl.text = pokemon.baseAttack
         pokedexLbl.text = "\(pokemon.pokedexId)"
+        movesLbl.text = pokemon.movesTxt
         
         if pokemon.nextEvolutionId == "" {
             evoLbl.text = "No Evolutions"
@@ -69,5 +74,26 @@ class PokemonDetailVC: UIViewController {
     
     @IBAction func backBtnPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func segControlPressed(_ sender: UISegmentedControl) {
+        
+        if segmentedControl.selectedSegmentIndex == 0 {
+            // Bio Selected
+            print(segmentedControl.titleForSegment(at: 0) ?? "")
+            
+            bioStackView.isHidden = false
+            movesStackView.isHidden = true
+            
+        } else {
+            //Moves Selected
+            print(segmentedControl.titleForSegment(at: 1) ?? "")
+            
+            bioStackView.isHidden = true
+            movesStackView.isHidden = false
+            
+            
+        }
+        
     }
 }

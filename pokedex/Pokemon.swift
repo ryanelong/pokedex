@@ -23,6 +23,8 @@ class Pokemon {
     private var _nextEvolutionId: String!
     private var _nextEvolutionLvl: String!
     private var _pokemonUrl: String!
+    private var _movesTxt: String!
+    
     
     var name: String {
         return _name
@@ -93,6 +95,13 @@ class Pokemon {
             _nextEvolutionLvl = ""
         }
         return _nextEvolutionLvl
+    }
+    
+    var movesTxt: String {
+        if _movesTxt == nil {
+            _movesTxt = ""
+        }
+        return _movesTxt
     }
     
     init(name: String, pokedexId: Int) {
@@ -214,6 +223,75 @@ class Pokemon {
                     }
                     
                 }
+                
+                
+                if let moves = dict["moves"] as? [Dictionary<String, AnyObject>], moves.count > 0 {
+                    
+                    //var counter = 1
+                    
+                    var learnTypesTutor = ""
+                    var learnTypesMachine = ""
+                    var learnTypesLevelUp = ""
+                    var learnTypesOther = ""
+                    
+                    
+//                    if let name = moves[0]["name"] as? String, let learn_type = moves[0]["learn_type"] as? String {
+//                        self._movesTxt = "\(counter). " + name.capitalized + " (" + learn_type.capitalized + ")"
+//                        counter += 1;
+//                    }
+                    
+                    if moves.count > 0 {
+                        for x in 0 ..< moves.count {
+                            if let name = moves[x]["name"] as? String, let learn_type = moves[x]["learn_type"] as? String {
+                                
+                                var seperator = ""
+                                
+                                if x > 0 {
+                                    seperator = ", "
+                                }
+                                
+                                switch learn_type
+                                {
+                                    case "tutor":
+                                        if learnTypesTutor == "" {
+                                            seperator = "Tutor: "
+                                        } else {
+                                            seperator = ", "
+                                        }
+                                        learnTypesTutor += seperator + name.capitalized
+                                    case "machine":
+                                        if learnTypesMachine == "" {
+                                            seperator = "Machine: "
+                                        } else {
+                                            seperator = ", "
+                                        }
+                                        learnTypesMachine += seperator + name.capitalized
+                                    case "level up":
+                                        if learnTypesLevelUp == "" {
+                                            seperator = "Level Up: "
+                                        } else {
+                                            seperator = ", "
+                                        }
+                                        learnTypesLevelUp += seperator + name.capitalized
+                                    default:
+                                        if learnTypesOther == "" {
+                                            seperator = "Other: "
+                                        } else {
+                                            seperator = ", "
+                                        }
+                                        learnTypesOther += seperator + name.capitalized
+                                }
+                            }
+                        }
+                        
+                        self._movesTxt = learnTypesTutor + "\n\n" + learnTypesMachine + "\n\n" + learnTypesLevelUp + "\n\n" + learnTypesOther
+                    }
+                    
+                } else {
+                    self._movesTxt = ""
+                }
+                
+                print(self._movesTxt)
                 
             }
             
